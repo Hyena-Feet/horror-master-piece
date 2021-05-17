@@ -1,0 +1,46 @@
+{
+    "name": "Horror Master Piece",
+    "description": "",
+    "dependencies": {
+        "device": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "assets.json",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "images.g.jres",
+        "images.g.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "1.4.41",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj",
+    "palette": [
+        "#000000",
+        "#CF1E1E",
+        "#9D1616",
+        "#FF3535",
+        "#FFF2F2",
+        "#DED2D2",
+        "#ADA5A5",
+        "#888282",
+        "#4F4B4B",
+        "#272626",
+        "#121212",
+        "#FDE549",
+        "#D3BC27",
+        "#A45858",
+        "#8A7272",
+        "#CF8989"
+    ]
+}
