@@ -1,6 +1,10 @@
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     Man.y += -16
 })
+function Hub () {
+    tiles.setTilemap(tilemap`level2`)
+    tiles.placeOnTile(Man, tiles.getTileLocation(2, 3))
+}
 function Start () {
     tiles.setTilemap(tilemap`level1`)
     tiles.placeOnTile(Man, tiles.getTileLocation(0, 10))
@@ -145,19 +149,23 @@ game.splash("Place Removed Chain Here")
 Man = sprites.create(assets.image`myImage0`, SpriteKind.Player)
 let Spook = 0
 Start()
+game.onUpdateInterval(1000, function () {
+    if (Spook == 0) {
+        scene.cameraShake(2, 500)
+    }
+})
+forever(function () {
+    while (Spook == 1 && Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile21`)) {
+        game.splash("I think it was a Lady at one point...")
+        game.splash("w . . . u p")
+        game.splash("W a k e  U p")
+        Spook += 1
+        Hub()
+    }
+})
 forever(function () {
     while (Spook == 0 && Man.tileKindAt(TileDirection.Top, assets.tile`myTile17`)) {
         game.splash("What is that Thing...")
         Spook += 1
     }
-    while (Spook == 1 && mySprite.tileKindAt(TileDirection.Bottom, assets.tile`myTile21`)) {
-        game.splash("I think it was a Lady at one point...")
-        game.setDialogTextColor(15)
-        game.splash("Wake Up")
-        game.setDialogTextColor(10)
-        game.splash("Wake Up")
-    }
-})
-game.onUpdateInterval(500, function () {
-	
 })
