@@ -9,8 +9,8 @@ function Start () {
     tiles.setTilemap(tilemap`level1`)
     tiles.placeOnTile(Man, tiles.getTileLocation(0, 10))
     scene.cameraFollowSprite(Man)
-    mySprite = sprites.create(assets.image`myImage`, SpriteKind.Food)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(18, 15))
+    Corpse = sprites.create(assets.image`myImage`, SpriteKind.Food)
+    tiles.placeOnTile(Corpse, tiles.getTileLocation(18, 15))
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     Man.x += -16
@@ -21,7 +21,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Man.y += 16
 })
-let mySprite: Sprite = null
+let Corpse: Sprite = null
 let Man: Sprite = null
 scene.setBackgroundImage(img`
     aaaaaaaaaaaaaaaaaaaaa999999aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa99999999aaaaaaaaaaaaaa
@@ -167,5 +167,6 @@ forever(function () {
     while (Spook == 0 && Man.tileKindAt(TileDirection.Top, assets.tile`myTile17`)) {
         game.splash("What is that Thing...")
         Spook += 1
+        Corpse.destroy()
     }
 })
