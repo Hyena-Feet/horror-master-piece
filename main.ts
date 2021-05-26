@@ -1,9 +1,17 @@
+namespace SpriteKind {
+    export const Item = SpriteKind.create()
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     Man.y += -16
 })
 function Hub () {
     tiles.setTilemap(tilemap`level2`)
     tiles.placeOnTile(Man, tiles.getTileLocation(2, 3))
+    tiles.placeOnTile(Key_1, tiles.getTileLocation(26, 3))
+    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
+    Key_1 = sprites.create(assets.image`myImage1`, SpriteKind.Food)
 }
 function Start () {
     tiles.setTilemap(tilemap`level1`)
@@ -21,7 +29,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Man.y += 16
 })
+let Room_1 = false
 let Corpse: Sprite = null
+let Key_1: Sprite = null
 let Man: Sprite = null
 scene.setBackgroundImage(img`
     aaaaaaaaaaaaaaaaaaaaa999999aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa99999999aaaaaaaaaaaaaa
@@ -155,18 +165,35 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
+    while (Spook == 2) {
+        if (Room_1 == true) {
+            while (Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile37`)) {
+                tiles.setWallAt(tiles.getTileLocation(4, 12), false)
+            }
+        }
+    }
+})
+forever(function () {
+    while (Spook == 2) {
+        if (Man.overlapsWith(Key_1)) {
+            Key_1.destroy(effects.trail, 500)
+            Room_1 = true
+        }
+    }
+})
+forever(function () {
     while (Spook == 1 && Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile21`)) {
         game.splash("I think it was a Lady at one point...")
         game.splash("w . . . u p")
         game.splash("W a k e  U p")
-        Spook += 1
         Hub()
+        Corpse.destroy()
+        Spook += 1
     }
 })
 forever(function () {
     while (Spook == 0 && Man.tileKindAt(TileDirection.Top, assets.tile`myTile17`)) {
         game.splash("What is that Thing...")
         Spook += 1
-        Corpse.destroy()
     }
 })
