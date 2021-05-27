@@ -1,34 +1,8 @@
 namespace SpriteKind {
     export const Item = SpriteKind.create()
 }
-function Hub () {
-    tiles.setTilemap(tilemap`level2`)
-    tiles.placeOnTile(Man, tiles.getTileLocation(2, 3))
-    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
-    tiles.setWallAt(tiles.getTileLocation(13, 12), true)
-    tiles.setWallAt(tiles.getTileLocation(26, 12), true)
-    if (Spook == 2) {
-        Key_1 = sprites.create(assets.image`myImage1`, SpriteKind.Projectile)
-        tiles.placeOnTile(Key_1, tiles.getTileLocation(26, 3))
-    } else {
-        if (Spook == 3) {
-            tiles.setWallAt(tiles.getTileLocation(4, 12), false)
-            tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
-        } else {
-            if (Spook == 4) {
-                tiles.setWallAt(tiles.getTileLocation(0, 0), false)
-                tiles.setWallAt(tiles.getTileLocation(0, 0), false)
-                tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
-                tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile37`)
-            } else {
-                if (Spook == 5) {
-                    tiles.setWallAt(tiles.getTileLocation(0, 0), false)
-                    tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
-                    tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
-                }
-            }
-        }
-    }
+function Dream_3 () {
+    Spook = 2
 }
 function Start () {
     tiles.setTilemap(tilemap`level1`)
@@ -37,12 +11,76 @@ function Start () {
     Corpse = sprites.create(assets.image`myImage`, SpriteKind.Food)
     tiles.placeOnTile(Corpse, tiles.getTileLocation(18, 15))
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile47`, function (sprite, location) {
-	
+function Hub_2 () {
+    tiles.setTilemap(tilemap`level3`)
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile39`, function (sprite, location) {
+    game.setDialogTextColor(12)
+    game.splash("S l e e p")
+    Dream_1()
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile47`, function (sprite, location) {
+    Doorness = 1
+})
+function Hub_3 () {
+    tiles.setTilemap(tilemap`level4`)
+}
+function Dream_1 () {
+    Spook = 4
+    tiles.setTilemap(tilemap`level7`)
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    if (Doorness == 1) {
+        Room_1 = true
+        Key_1.destroy(effects.disintegrate, 500)
+        game.splash("This seems to be the ", "Key for Room 1")
+    }
+    if (Doorness == 2) {
+        Room_2 = true
+        Key_2.destroy(effects.disintegrate, 500)
+        game.splash("This seems to be the ", "Key for Room 2")
+        game.splash("Wake Up . . .")
+        Hub_2()
+    }
+})
+function Final_Moments () {
+	
+}
+function Dream_2 () {
+    Spook = 3
+    Key_2 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Food)
+}
+function Hub_1 () {
+    tiles.setTilemap(tilemap`level2`)
+    tiles.placeOnTile(Man, tiles.getTileLocation(2, 3))
+    Key_1 = sprites.create(assets.image`myImage1`, SpriteKind.Food)
+    tiles.placeOnTile(Key_1, tiles.getTileLocation(26, 3))
+    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
+    game.splash("I feel strangely attracted ", "To the far closet")
+}
+let Key_2: Sprite = null
+let Room_2 = false
+let Key_1: Sprite = null
 let Room_1 = false
 let Corpse: Sprite = null
-let Key_1: Sprite = null
+let Doorness = 0
 let Spook = 0
 let Man: Sprite = null
 scene.setBackgroundImage(img`
@@ -170,8 +208,8 @@ scene.setBackgroundImage(img`
 game.splash("Place Removed Chain Here")
 Man = sprites.create(assets.image`myImage0`, SpriteKind.Player)
 Spook = 0
+Doorness = 0
 controller.moveSprite(Man, 150, 150)
-let Days = 0
 Start()
 game.onUpdateInterval(1000, function () {
     if (Spook == 0) {
@@ -179,20 +217,20 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
-    while (Spook == 2) {
-        if (Man.overlapsWith(Key_1)) {
-            Key_1.destroy(effects.trail, 500)
-            Room_1 = true
+    if (Room_1 == true) {
+        while (Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile37`)) {
+            tiles.setWallAt(tiles.getTileLocation(4, 12), false)
+            tiles.setTileAt(tiles.getTileLocation(4, 12), assets.tile`myTile46`)
         }
     }
 })
 forever(function () {
-    while (Spook == 2) {
-        if (Room_1 == true) {
-            while (Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile37`)) {
-                Days = 1
-            }
-        }
+    if (Spook == 3) {
+    	
+    } else if (Spook == 4) {
+    	
+    } else if (Spook == 5) {
+    	
     }
 })
 forever(function () {
@@ -201,7 +239,7 @@ forever(function () {
         game.splash("w . . . u p")
         game.splash("W a k e  U p")
         Corpse.destroy()
-        Hub()
+        Hub_1()
     }
 })
 forever(function () {
