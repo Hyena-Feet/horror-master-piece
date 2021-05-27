@@ -1,17 +1,34 @@
 namespace SpriteKind {
     export const Item = SpriteKind.create()
 }
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    Man.y += -16
-})
 function Hub () {
     tiles.setTilemap(tilemap`level2`)
     tiles.placeOnTile(Man, tiles.getTileLocation(2, 3))
-    tiles.placeOnTile(Key_1, tiles.getTileLocation(26, 3))
     tiles.setWallAt(tiles.getTileLocation(4, 12), true)
-    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
-    tiles.setWallAt(tiles.getTileLocation(4, 12), true)
-    Key_1 = sprites.create(assets.image`myImage1`, SpriteKind.Food)
+    tiles.setWallAt(tiles.getTileLocation(13, 12), true)
+    tiles.setWallAt(tiles.getTileLocation(26, 12), true)
+    if (Spook == 2) {
+        Key_1 = sprites.create(assets.image`myImage1`, SpriteKind.Projectile)
+        tiles.placeOnTile(Key_1, tiles.getTileLocation(26, 3))
+    } else {
+        if (Spook == 3) {
+            tiles.setWallAt(tiles.getTileLocation(4, 12), false)
+            tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
+        } else {
+            if (Spook == 4) {
+                tiles.setWallAt(tiles.getTileLocation(0, 0), false)
+                tiles.setWallAt(tiles.getTileLocation(0, 0), false)
+                tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
+                tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile37`)
+            } else {
+                if (Spook == 5) {
+                    tiles.setWallAt(tiles.getTileLocation(0, 0), false)
+                    tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
+                    tiles.setTileAt(tiles.getTileLocation(0, 0), assets.tile`myTile46`)
+                }
+            }
+        }
+    }
 }
 function Start () {
     tiles.setTilemap(tilemap`level1`)
@@ -20,18 +37,13 @@ function Start () {
     Corpse = sprites.create(assets.image`myImage`, SpriteKind.Food)
     tiles.placeOnTile(Corpse, tiles.getTileLocation(18, 15))
 }
-controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    Man.x += -16
-})
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    Man.x += 16
-})
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    Man.y += 16
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile47`, function (sprite, location) {
+	
 })
 let Room_1 = false
 let Corpse: Sprite = null
 let Key_1: Sprite = null
+let Spook = 0
 let Man: Sprite = null
 scene.setBackgroundImage(img`
     aaaaaaaaaaaaaaaaaaaaa999999aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa99999999aaaaaaaaaaaaaa
@@ -157,20 +169,13 @@ scene.setBackgroundImage(img`
     `)
 game.splash("Place Removed Chain Here")
 Man = sprites.create(assets.image`myImage0`, SpriteKind.Player)
-let Spook = 0
+Spook = 0
+controller.moveSprite(Man, 150, 150)
+let Days = 0
 Start()
 game.onUpdateInterval(1000, function () {
     if (Spook == 0) {
         scene.cameraShake(2, 500)
-    }
-})
-forever(function () {
-    while (Spook == 2) {
-        if (Room_1 == true) {
-            while (Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile37`)) {
-                tiles.setWallAt(tiles.getTileLocation(4, 12), false)
-            }
-        }
     }
 })
 forever(function () {
@@ -182,18 +187,26 @@ forever(function () {
     }
 })
 forever(function () {
+    while (Spook == 2) {
+        if (Room_1 == true) {
+            while (Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile37`)) {
+                Days = 1
+            }
+        }
+    }
+})
+forever(function () {
     while (Spook == 1 && Man.tileKindAt(TileDirection.Bottom, assets.tile`myTile21`)) {
         game.splash("I think it was a Lady at one point...")
         game.splash("w . . . u p")
         game.splash("W a k e  U p")
-        Hub()
         Corpse.destroy()
-        Spook += 1
+        Hub()
     }
 })
 forever(function () {
     while (Spook == 0 && Man.tileKindAt(TileDirection.Top, assets.tile`myTile17`)) {
         game.splash("What is that Thing...")
-        Spook += 1
+        Spook = 1
     }
 })
